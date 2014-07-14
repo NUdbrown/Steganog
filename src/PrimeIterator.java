@@ -28,6 +28,7 @@ public class PrimeIterator implements Iterator<Integer> {
 		}
 
 		iterate = thePrimes.iterator();
+
 	}
 
 	@Override

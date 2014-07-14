@@ -23,8 +23,8 @@ public class Steganog {
 			String redString, greenString, blueString;
 			Color theColor = new Color(org.getRGB(p%org.getWidth(), p/org.getWidth()));
 
-			//bit-shifting and grabing the chars
-			valueB = (message.charAt(r) - 32) + 64;
+			//bit-shifting and grabbing the chars
+			valueB = (message.charAt(r) - ' ') + 64;
 			valueG = valueB >> 2;
 		valueR = valueB >> 4;
 
@@ -70,44 +70,44 @@ public class Steganog {
 
 	public String retretiveFromImage(File imageWithEmbeddedMsg) throws IOException {
 
-        String hiddenMsg="";
+		String hiddenMsg="";
 
-        BufferedImage msgPic = ImageIO.read(imageWithEmbeddedMsg);
-        iterator = new PrimeIterator(msgPic.getWidth()*msgPic.getHeight());
+		BufferedImage msgPic = ImageIO.read(imageWithEmbeddedMsg);
+		iterator = new PrimeIterator(msgPic.getWidth()*msgPic.getHeight());
 
-        for(int m = iterator.next(); iterator.hasNext(); m = iterator.next())
-        {
-            Color lor = new Color(msgPic.getRGB(m % msgPic.getWidth(), m / msgPic.getWidth()));
-            String temporary, rString, gString, bString;
-            Integer redValue, greenValue, blueValue;
+		for(int m = iterator.next(); iterator.hasNext(); m = iterator.next())
+		{
+			Color lor = new Color(msgPic.getRGB(m % msgPic.getWidth(), m / msgPic.getWidth()));
+			String temporary, rString, gString, bString;
+			Integer redValue, greenValue, blueValue;
 
-            //make sure there is not a zero at the end
-            redValue = (int) lor.getRed() + 64;
-            greenValue = (int) lor.getGreen() + 64;
-            blueValue = (int) lor.getBlue() + 64;
+			//make sure there is not a zero at the end
+			redValue = (int) lor.getRed() + 64;
+			greenValue = (int) lor.getGreen() + 64;
+			blueValue = (int) lor.getBlue() + 64;
 
-            //grabbing the binary form of the int
-            rString = Integer.toBinaryString(redValue);
-            gString = Integer.toBinaryString(greenValue);
-            bString = Integer.toBinaryString(blueValue);
+			//grabbing the binary form of the int
+			rString = Integer.toBinaryString(redValue);
+			gString = Integer.toBinaryString(greenValue);
+			bString = Integer.toBinaryString(blueValue);
 
-            //removing the last two values(6 to 4)
-            rString = rString.substring(rString.length() - 2);
-            gString = gString.substring(gString.length() - 2);
-            bString = bString.substring(bString.length() - 2);
+			//removing the last two values(6 to 4)
+			rString = rString.substring(rString.length() - 2);
+			gString = gString.substring(gString.length() - 2);
+			bString = bString.substring(bString.length() - 2);
 
-            //doing concat of the rgb values
-            temporary = rString+gString+bString;
+			//doing concat of the rgb values
+			temporary = rString+gString+bString;
 
-            //making the letters from the values
-            char theLetter;
-            theLetter = (char) (Integer.parseInt(temporary,2)+32);
+			//making the letters from the values
+			char theLetter;
+			theLetter = (char) (Integer.parseInt(temporary,2)+' ');
 
-            if(Character.toString(theLetter).matches("([A-Z .!])")){
-                hiddenMsg += Character.toString(theLetter);
-            }
+			if(Character.toString(theLetter).matches("([A-Z .!])")){
+				hiddenMsg += Character.toString(theLetter);
+			}
 
-        }
+		}
 
 		return hiddenMsg;
 	}
